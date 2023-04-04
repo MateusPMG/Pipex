@@ -2,32 +2,33 @@ NAME = pipex
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -o pipex
 
 RM = @rm -f
-
-LIBFT = Libft/libft/libft.a
-LIBFT_PATH = Libft/libft
-
-$(LIBFT): $(shell make -C $(LIBFT_PATH) -q libft.a)
-		make -C $(LIBFT_PATH)
-
 
 SRC = pipex.c process.c commands.c
 
 OBJ = $(SRC:.c=.o)
- 
+
+LIBFT = libft/libft.a
+LIBFT_PATH = libft/
+
+$(LIBFT): $(shell make -C $(LIBFT_PATH) -q libft.a)
+		make -C $(LIBFT_PATH)
+
 $(NAME):		$(OBJ) $(LIBFT)
-				$(CC) $(OBJ) $(LIBFT) 
+				$(CC) $(CFLAGS) $(OBJ) $(LIBFT) 
 
 all:			$(NAME)
 
 clean:
-				$(RM) $(OBJ)
 				make clean -C $(LIBFT_PATH)
+				$(RM) $(OBJ)
 
 fclean: 		clean
+				make fclean -C $(LIBFT_PATH)
 				$(RM) $(NAME)
-				make clean -C $(LIBFT_PATH)
 
 re:		fclean	$(NAME)
+
+.PHONY: all clean fclean re

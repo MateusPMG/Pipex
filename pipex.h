@@ -6,14 +6,14 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:06:57 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/03/20 16:09:31 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/03/23 15:00:57 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "Libft/libft/libft.h"
+# include "libft/libft.h"
 
 /*for pid_t, waitpid*/
 # include <sys/types.h>

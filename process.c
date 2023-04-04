@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:44:06 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/03/20 14:22:02 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/04/04 14:51:11 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	child(int *fd, char **av, char **envp)
 	int	infile_fd;
 
 	close(fd[0]);
-	infile_fd = open(av[1], O_RDONLY, 0777);
+	infile_fd = open(av[1], O_RDONLY, 0644);
 	if (infile_fd < 0)
 	{
 		perror("Error");
@@ -34,7 +34,7 @@ void	parent(int *fd, char **av, char **envp)
 	int	outfile_fd;
 
 	close(fd[1]);
-	outfile_fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	outfile_fd = open(av[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile_fd < 0)
 	{
 		perror("Error");
