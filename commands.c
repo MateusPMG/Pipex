@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 14:18:17 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/04/04 15:27:58 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:36:13 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,14 @@ void	use_command(char *str, char **envp)
 	cmd = get_cmd(cmd_paths, cmd_args[0]);
 	if (!cmd)
 	{
-		free(cmd_paths);
-		free(cmd_args);
-		free(cmd);
+		free_all(cmd_args, cmd_paths, cmd);
 		perror("Error");
 		exit (1);
 	}
-	execve(cmd, cmd_args, envp);
+	if (execve(cmd, cmd_args, envp) == -1)
+	{
+		free_all(cmd_args, cmd_paths, cmd);
+		perror("Error");
+		exit (1);
+	}
 }

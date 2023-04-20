@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:06:57 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/03/23 15:00:57 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/04/20 13:35:25 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@
 void	child(int *fd, char **av, char **envp);
 void	parent(int *fd, char **av, char **envp);
 void	use_command(char *str, char **envp);
+void	free_all(char **args, char **paths, char *cmd);
 
 #endif

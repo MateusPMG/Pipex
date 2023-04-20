@@ -2,7 +2,7 @@ NAME = pipex
 
 CC = @cc
 
-CFLAGS = -Wall -Wextra -Werror -g -o pipex
+CFLAGS = -Wall -Wextra -Werror -g -o pipex -fsanitize=address
 
 RM = @rm -f
 
