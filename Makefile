@@ -1,22 +1,15 @@
 NAME = pipex
-
-CC = @cc
-
-CFLAGS = -Wall -Wextra -Werror -g -o pipex -fsanitize=address
-
-RM = @rm -f
-
+LIBFT = libft/libft.a
+LIBFT_PATH = libft/
 SRC = pipex.c process.c commands.c
+RM = @rm -f
+CC = @cc
+CFLAGS = -Wall -Wextra -Werror -g -o pipex -fsanitize=address
 
 OBJ = $(SRC:.c=.o)
 
-LIBFT = libft/libft.a
-LIBFT_PATH = libft/
-
-$(LIBFT): $(shell make -C $(LIBFT_PATH) -q libft.a)
-		make -C $(LIBFT_PATH)
-
-$(NAME):		$(OBJ) $(LIBFT)
+$(NAME):		$(OBJ)	
+				@$(MAKE) --no-print-directory -C $(LIBFT_PATH)
 				$(CC) $(CFLAGS) $(OBJ) $(LIBFT) 
 
 all:			$(NAME)
