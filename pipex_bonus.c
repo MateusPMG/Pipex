@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:56:07 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/04/27 14:55:18 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/04/27 15:30:24 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,14 @@ int	main(int ac, char **av, char **env)
 	{
 		fdin = open(av[1], O_RDONLY);
 		fdout = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
-		if (fdout < 0 || fdin < 0)
+		if (fdout < 0)
 		{
 			perror("Error");
 			exit(1);
 		}
 		dup2(fdin, STDIN_FILENO);
 		redirect(av[2], env);
-		while (i <= ac - 2)
+		while (i < ac - 2)
 			redirect(av[i++], env);
 		dup2(fdout, STDOUT_FILENO);
 		use_command(av[ac - 2], env);

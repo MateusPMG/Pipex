@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 14:18:17 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/04/27 14:38:28 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/04/27 15:06:24 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*get_cmd(char **paths, char *cmd)
 		tmp = ft_strjoin(*paths, "/");
 		command = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (access(command, 0) == 0)
+		if (access(command, F_OK & X_OK) == 0)
 			return (command);
 		free(command);
 		paths++;
