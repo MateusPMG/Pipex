@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 12:06:57 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/04/26 15:28:40 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/04/28 15:49:53 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@
 
 /*for file control options and flags*/
 # include <fcntl.h>
+
+typedef struct files
+{
+	int	fdin;
+	int	fdout;
+	int	here;
+}					t_files;
 
 void	use_command(char *str, char **envp);
 void	free_all(char **args, char **paths, char *cmd);

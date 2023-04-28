@@ -9,7 +9,7 @@ RM		=		rm -f
 SRC 	=	 ft_strlen.c ft_strlcpy.c ft_strlcat.c\
 ft_strnstr.c ft_strncmp.c ft_memcpy.c\
 ft_strdup.c ft_substr.c ft_strjoin.c \
-ft_split.c 
+ft_split.c get_next_line_bonus.c get_next_line_utils_bonus.c
 
 
 OBJ		=		$(SRC:.c=.o)
