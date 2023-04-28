@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:56:07 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/04/28 16:42:21 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/04/28 18:22:40 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@ void	open_file(int ac, char **av, t_files *file)
 {
 	file->fdin = open(av[1], O_RDONLY);
 	file->fdout = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (file->fdout < 0)
-	{
-		perror("Error");
-		exit(1);
-	}
 	dup2(file->fdin, STDIN_FILENO);
 }
 
@@ -31,11 +26,6 @@ void	here_doc(int ac, char **av, t_files *file)
 	file->fdin = open(".here_doc", O_RDWR | O_CREAT | O_TRUNC | 0644);
 	file->fdout = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0644);
 	file->here = 1;
-	if (file->fdin == -1)
-	{
-		perror("Error");
-		exit(1);
-	}
 	while (1)
 	{
 		write(1, "here_doc>", 9);
@@ -46,10 +36,11 @@ void	here_doc(int ac, char **av, t_files *file)
 		write(file->fdin, buf, ft_strlen(buf));
 		free(buf);
 	}
+	dup2(file->fdin, STDIN_FILENO);
 	free(buf);
 }
 
-void	redirect(char *cmd, char**env, int fdin)
+void	redirect(char *cmd, char**env)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -66,8 +57,6 @@ void	redirect(char *cmd, char**env, int fdin)
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
-		if (fdin == STDIN_FILENO)
-			exit(1);
 		use_command(cmd, env);
 	}
 	else
@@ -83,7 +72,6 @@ int	main(int ac, char **av, char **env)
 	int		i;
 	t_files	file;
 
-	i = 3;
 	file.fdin = 0;
 	file.fdout = 0;
 	file.here = 0;
@@ -95,10 +83,11 @@ int	main(int ac, char **av, char **env)
 			here_doc(ac, av, &file);
 		else
 			open_file(ac, av, &file);
-		dup2(file.fdin, STDIN_FILENO);
-		redirect(av[2 + file.here], env, file.fdin);
-		while (i < ac - 2 + file.here)
-			redirect(av[i++], env, 1);
+		i = 3;
+		if (file.here == 0)
+			redirect(av[2], env);
+		while (i < ac - 2)
+			redirect(av[i++], env);
 		dup2(file.fdout, STDOUT_FILENO);
 		use_command(av[ac - 2], env);
 	}
