@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:56:07 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/04/28 18:22:40 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/05/02 19:29:25 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ void	here_doc(int ac, char **av, t_files *file)
 {
 	char	*buf;
 
-	file->fdin = open(".here_doc", O_RDWR | O_CREAT | O_TRUNC | 0644);
+	file->fdin = open(".here_doc", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	file->fdout = open(av[ac - 1], O_RDWR | O_CREAT | O_APPEND, 0644);
 	file->here = 1;
 	while (1)
 	{
 		write(1, "here_doc>", 9);
 		buf = get_next_line(STDIN_FILENO);
-		if (!ft_strncmp(buf, av[2], ft_strlen(av[2]))
-			&& buf[ft_strlen(av[2])] == '\n')
+		if (!buf || (!ft_strncmp(buf, av[2], ft_strlen(av[2]))
+				&& buf[ft_strlen(av[2])] == '\n'))
 			break ;
 		write(file->fdin, buf, ft_strlen(buf));
 		free(buf);
@@ -40,7 +40,7 @@ void	here_doc(int ac, char **av, t_files *file)
 	free(buf);
 }
 
-void	redirect(char *cmd, char**env)
+void	redirect(char *cmd, char **env, int in_fd, int out_fd)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -56,13 +56,14 @@ void	redirect(char *cmd, char**env)
 	if (pid == 0)
 	{
 		close(pipefd[0]);
+		dup2(in_fd, STDIN_FILENO);
 		dup2(pipefd[1], STDOUT_FILENO);
 		use_command(cmd, env);
 	}
 	else
 	{
 		close(pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
+		dup2(pipefd[0], out_fd);
 		waitpid(pid, NULL, 0);
 	}
 }
@@ -83,13 +84,15 @@ int	main(int ac, char **av, char **env)
 			here_doc(ac, av, &file);
 		else
 			open_file(ac, av, &file);
-		i = 3;
-		if (file.here == 0)
-			redirect(av[2], env);
+		i = 2 + file.here;
 		while (i < ac - 2)
-			redirect(av[i++], env);
+		{
+			redirect(av[i], env, STDIN_FILENO, STDOUT_FILENO);
+			i++;
+		}
 		dup2(file.fdout, STDOUT_FILENO);
 		use_command(av[ac - 2], env);
 	}
+	unlink(".here_doc");
 	return (1);
 }
