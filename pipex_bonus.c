@@ -6,7 +6,7 @@
 /*   By: mpatrao <mpatrao@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 11:56:07 by mpatrao           #+#    #+#             */
-/*   Updated: 2023/05/03 11:58:48 by mpatrao          ###   ########.fr       */
+/*   Updated: 2023/05/03 12:13:18 by mpatrao          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	write_to_pipe(int *fd, char **av)
 	}
 	free(buf);
 	close(*fd);
+	exit(0);
 }
 
 int	here_doc(char **av)
@@ -76,10 +77,6 @@ int	start_files(int ac, char **av, t_files *file)
 	}
 	return (i);
 }
-
-
-
-
 
 void	redirect(char *cmd, char **env)
 {
